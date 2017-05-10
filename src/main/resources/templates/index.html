@@ -1,0 +1,83 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <!--<link type="text/css" rel="stylesheet" href="../css/topMenu.css"/>-->
+    <!--<link type="text/css" rel="stylesheet" href="css/home1.css"/>-->
+    <!--<link type="text/css" rel="stylesheet" href="static/home3.css"/>-->
+    <!--<link type="text/css" rel="stylesheet" href="../static/home3.css"/>-->
+
+    <link type="text/css" rel="stylesheet" href="css/page.css"/>
+    <link type="text/css" rel="stylesheet" href="css/topMenu.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+</head>
+
+
+<body>
+<ul>
+    <li><a href="#home">Home</a></li>
+    <li><a href="#news">News</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#about">About</a></li>
+</ul>
+
+<a id="test"></a>
+
+<table id="personDataTable">
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Command</th>
+        <th>Description</th>
+        <th>Starting dir</th>
+    </tr>
+</table>
+
+<table id="groups">
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Starting dir</th>
+    </tr>
+</table>
+
+
+<table data-toggle="table"
+       data-url="groups/"
+       data-use-row-attr-func="true"
+       data-reorderable-rows="true"
+       id="table">
+    <thead>
+    <tr>
+        <th data-field="name">Name</th>
+        <th data-field="description">Description</th>
+        <th data-field="startingDirectory">Starting dir</th>
+    </tr>
+    </thead>
+</table>
+
+
+<div id="submit-form">
+    Name: <input type="text" name="name"/> <br/>
+    Command: <input type="text" name="command"/> <br/>
+    Description: <input type="text" name="description"/> <br/>
+    Starting directory: <input type="text" name="startingDirectory"/> <br/>
+</div>
+
+<input type="button" id="submit" value="Submit Job" onclick="submitForm()"/>
+
+
+<script src="js/group_table.js"/>
+<script src="js/table.js"/>
+<script src="js/submit.js"/>
+<script src="js/sortable.js"/>
+<script src="js/controller.js"/>
+
+</body>
+
+
+</html>
