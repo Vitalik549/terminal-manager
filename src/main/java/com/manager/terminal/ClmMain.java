@@ -16,7 +16,5 @@ public class ClmMain {
         springApplicationBuilder
                // .properties(properties)
                 .run();
-
-
     }
 }

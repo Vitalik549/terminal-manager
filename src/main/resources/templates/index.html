@@ -6,26 +6,31 @@
     <title>Getting Started: Serving Web Content</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
-    <!--<link type="text/css" rel="stylesheet" href="../css/topMenu.css"/>-->
-    <!--<link type="text/css" rel="stylesheet" href="css/home1.css"/>-->
-    <!--<link type="text/css" rel="stylesheet" href="static/home3.css"/>-->
-    <!--<link type="text/css" rel="stylesheet" href="../static/home3.css"/>-->
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
     <link type="text/css" rel="stylesheet" href="css/page.css"/>
     <link type="text/css" rel="stylesheet" href="css/topMenu.css"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="css/sortable.css"/>
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </head>
 
 
 <body>
-<ul>
-    <li><a href="#home">Home</a></li>
-    <li><a href="#news">News</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#about">About</a></li>
+<ul id="top-menu">
+    <li><a href="/groups">Groups</a></li>
+    <li><a href="/jobs">Jobs</a></li>
 </ul>
-
-<a id="test"></a>
 
 <table id="personDataTable">
     <tr>
@@ -45,35 +50,31 @@
     </tr>
 </table>
 
+<!--<div id="submit-form">-->
+    <!--Name: <input type="text" name="name"/> <br/>-->
+    <!--Command: <input type="text" name="command"/> <br/>-->
+    <!--Description: <input type="text" name="description"/> <br/>-->
+    <!--Starting directory: <input type="text" name="startingDirectory"/> <br/>-->
+<!--</div>-->
 
-<table data-toggle="table"
-       data-url="groups/"
-       data-use-row-attr-func="true"
-       data-reorderable-rows="true"
-       id="table">
-    <thead>
-    <tr>
-        <th data-field="name">Name</th>
-        <th data-field="description">Description</th>
-        <th data-field="startingDirectory">Starting dir</th>
-    </tr>
-    </thead>
-</table>
-
-
-<div id="submit-form">
+<div id="create-group-form">
     Name: <input type="text" name="name"/> <br/>
-    Command: <input type="text" name="command"/> <br/>
     Description: <input type="text" name="description"/> <br/>
     Starting directory: <input type="text" name="startingDirectory"/> <br/>
 </div>
 
-<input type="button" id="submit" value="Submit Job" onclick="submitForm()"/>
+<input type="button" id="submit-group" value="Create Group" onclick="createGroup()"/>
 
 
-<script src="js/group_table.js"/>
-<script src="js/table.js"/>
-<script src="js/submit.js"/>
+<div id="groups-panel">
+    <div id="panel-header">Header</div>
+    <ul id="sortable"></ul>
+</div>
+
+
+<script src="js/table_groups.js"/>
+<script src="js/table_jobs.js"/>
+<script src="js/submit_group.js"/>
 <script src="js/sortable.js"/>
 <script src="js/controller.js"/>
 

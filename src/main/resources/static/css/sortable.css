@@ -7,9 +7,5 @@
         padding-left: 1em;
         font-size: 1.4em;
         max-height: 100%;
-
-}
-
-li>div {
-
+        list-style-type: none;
 }

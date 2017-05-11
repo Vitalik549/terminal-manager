@@ -1,6 +1,5 @@
 drawGroupsTable();
 
-
 function drawGroupsTable() {
 
     var TABLE = "#sortable";
@@ -51,7 +50,6 @@ function drawGroupsTable() {
         drawJobs(jobContainer, group);
     }
 
-
     function drawJobs(parent, group) {
         var el = $("<ul />");
         parent.append(el);
@@ -65,12 +63,29 @@ function drawGroupsTable() {
     }
 
     function drawJob(parent, job) {
-        console.log('drawJob');
-        var el = $("<li />");
+        var el = $("<li class='row'/>");
         el.data(job);
         el.attr('job-id', job.id);
-        el.append($("<div>" + job.name + "</div>"));
+        el.append($("<div class='job-name col-md-6'>" + job.name + "</div>"));
 
         $(parent).append(el);
+
+        drawJobControllers(el, job);
+    }
+
+    function drawJobControllers(parent, job) {
+        var buttons = $("<div class='job-controllers col-md-6' />");
+        parent.append(buttons);
+
+        drawStartJobBtn(buttons, job);
+    }
+
+
+    function drawStartJobBtn(parent, job) {
+        var btn = $('<button type="button" class="btn btn-success start-job-btn">Start</button>');
+        btn.click(function () {
+            startJob(job.id);
+        });
+        parent.append(btn);
     }
 }
