@@ -15,18 +15,6 @@ function createJob(){
 
     }
 
-    function postJson(url, data){
-        $.ajax({
-            type: "POST",
-            url: url,
-            data: data,
-            dataType: "json",
-            contentType : "application/json"
-        }).done(function() {
-            alert( "second success" );
-        });
-    }
-
     function getSubmitFormJson() {
         return JSON.stringify(getSubmitFormObject());
     }

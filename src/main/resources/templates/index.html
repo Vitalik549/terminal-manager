@@ -32,38 +32,13 @@
     <li><a href="/jobs">Jobs</a></li>
 </ul>
 
-<table id="personDataTable">
-    <tr>
-        <th>Id</th>
-        <th>Name</th>
-        <th>Command</th>
-        <th>Description</th>
-        <th>Starting dir</th>
-    </tr>
-</table>
-
-<table id="groups">
-    <tr>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Starting dir</th>
-    </tr>
-</table>
-
-<!--<div id="submit-form">-->
-    <!--Name: <input type="text" name="name"/> <br/>-->
-    <!--Command: <input type="text" name="command"/> <br/>-->
-    <!--Description: <input type="text" name="description"/> <br/>-->
-    <!--Starting directory: <input type="text" name="startingDirectory"/> <br/>-->
-<!--</div>-->
-
 <div id="create-group-form">
     Name: <input type="text" name="name"/> <br/>
     Description: <input type="text" name="description"/> <br/>
     Starting directory: <input type="text" name="startingDirectory"/> <br/>
 </div>
 
-<input type="button" id="submit-group" value="Create Group" onclick="createGroup()"/>
+<input type="button" id="submit-group" value="Create Group" onclick="submitGroup()"/>
 
 
 <div id="groups-panel">
@@ -72,11 +47,8 @@
 </div>
 
 
-<script src="js/table_groups.js"/>
-<script src="js/table_jobs.js"/>
-<script src="js/submit_group.js"/>
+<script src="js/storage.js"/>
 <script src="js/sortable.js"/>
-<script src="js/controller.js"/>
 
 </body>
 

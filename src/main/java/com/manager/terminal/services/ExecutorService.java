@@ -13,19 +13,16 @@ public class ExecutorService {
     @Autowired
     private Executor executor;
 
-    @Autowired
-    private JobService jobService;
-
-    public void startJob(Integer jobId){
-        executor.startJob(jobService.getJob(jobId));
+    public void startJob(Job job){
+        executor.startJob(job);
     }
 
-    public void stopJob(Integer jobId){
-        executor.stopJob(jobService.getJob(jobId));
+    public void stopJob(Job job){
+        executor.stopJob(job);
     }
 
-    public boolean isRunning(Integer jobId){
-        return getRunningJobs().contains(jobService.getJob(jobId));
+    public boolean isRunning(Job job){
+        return getRunningJobs().contains(job);
     }
 
     public List<Job> getRunningJobs(){

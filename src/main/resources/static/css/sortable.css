@@ -1,11 +1,16 @@
-#sortable { list-style-type: none; margin: 0; padding: 0; width: 30%; }
+#sortable { list-style-type: none; margin: 0; padding: 0; max-width: 30%; }
 
-#sortable li {
-        margin: auto;
-       // margin: 0 3px 3px 3px;
-        padding: 0.4em;
-        padding-left: 1em;
-        font-size: 1.4em;
+#sortable>li {
+
+        max-width: 100%;
         max-height: 100%;
+        font-size: 1.4em;
+}
+
+li {
         list-style-type: none;
+}
+
+.job-unordered-list li{
+        font-size: 0.8em;
 }

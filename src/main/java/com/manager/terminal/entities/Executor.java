@@ -1,9 +1,7 @@
 package com.manager.terminal.entities;
 
-import com.manager.terminal.services.JobService;
 import com.manager.terminal.utils.Env;
 import com.manager.terminal.utils.ProcessHelper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 
@@ -18,9 +16,6 @@ public class Executor {
 
     private static ThreadPoolTaskExecutor executor;
     private static List<Job> RUNNING = Collections.synchronizedList(new ArrayList<>());
-
-    @Autowired
-    private JobService jobService;
 
     private Executor() {
         initialize();
@@ -53,8 +48,8 @@ public class Executor {
     }
 
     public void stopJob(Job job) {
-        if (!RUNNING.contains(job)) {
-            System.out.println("NO SUCH THREAD");
+        if (!getRunningJobs().contains(job)) {
+            System.out.println("NO SUCH JOB");
             return;
         }
         ProcessHelper

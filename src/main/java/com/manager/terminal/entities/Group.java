@@ -1,34 +1,17 @@
 package com.manager.terminal.entities;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
-import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
-@Entity
-@Table(name = "groups")
 public class Group {
 
-    @Id //mark as primary key
-    @Column(name = "id", unique = true)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    @Column(name = "name", unique = true)
     private String name;
     private String description;
-
-    @Column(name = "directory", nullable = false)
     private String startingDirectory;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "group")
-    @JsonManagedReference
-    @OrderBy("position ASC")
     private List<Job> jobs;
 
-    public Group() {
-    }
+    public Group() {}
 
     public Integer getId() {
         return id;

@@ -1,46 +1,20 @@
 package com.manager.terminal.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@Entity
-@Table(name = "jobs", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"job_group_id", "position"})})
 public class Job {
 
-    @Id //mark as primary key
-    @Column(unique = true)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    @Column(unique = true)
     private String name;
     private String description;
     private String command;
     private int position;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "job_group_id")
-    @JsonBackReference
-    private Group group;
-
-    @Column(name = "directory")
+    private Integer groupId;
     private String startingDirectory;
-
-    @JsonIgnore
-    @Transient
     transient private Process process;
-
-    @JsonIgnore
-    @Transient
     private long pid = -1;
-
-    @JsonIgnore
-    @Transient
     private List<Integer> processTree = new ArrayList<>();
 
     public Job(int id, String name, String command, String description, String startingDirectory) {
@@ -156,12 +130,12 @@ public class Job {
                 '}';
     }
 
-    public Group getGroup() {
-        return group;
+    public Integer getGroupId() {
+        return groupId;
     }
 
-    public void setGroup(Group group) {
-        this.group = group;
+    public void setGroupId(Integer groupId) {
+        this.groupId = groupId;
     }
 
     public int getPosition() {
