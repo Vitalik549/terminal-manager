@@ -34,7 +34,7 @@
         data = data || readData();
         var existing = findGroupByName(group.name, data);
 
-        if (!existing.group) {
+        if (!existing.group && validateGroup(group)) {
             data.groups.push(group);
             writeData(data);
             return group;
@@ -46,8 +46,6 @@
     function validateGroup(group){
     return group.name && group.description && group.startingDirectory;
     }
-
-
 
     function removeGroupByName(name, data) {
         data = data || readData();
@@ -116,6 +114,25 @@ var g3 = {
   "description": "prints directory 2 time",
   "command" : "pwd && pwd",
   "startingDirectory" : "/Users/admin/Documents"
+}]
+}
+
+var g4 = {
+  "name": "CRUD",
+  "description": "crud project builder",
+ "startingDirectory" : "/Users/admin/work/projects/crud-tests",
+"jobs" : [
+{
+  "name": "maven clean",
+  "description": "cleaning targets",
+  "command" : "mvn clean",
+  "startingDirectory" : "/Users/admin/work/projects/crud-tests"
+},
+{
+  "name": "maven test",
+  "description": "starting tests",
+  "command" : "mvn test",
+  "startingDirectory" : "/Users/admin/work/projects/crud-tests"
 }]
 }
 

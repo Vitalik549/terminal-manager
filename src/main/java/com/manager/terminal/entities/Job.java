@@ -1,5 +1,6 @@
 package com.manager.terminal.entities;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -15,16 +16,8 @@ public class Job {
     private String startingDirectory;
     transient private Process process;
     private long pid = -1;
+    private File logFile = Executor.file;
     private List<Integer> processTree = new ArrayList<>();
-
-    public Job(int id, String name, String command, String description, String startingDirectory) {
-        super();
-        this.id = id;
-        this.name = name;
-        this.command = command;
-        this.description = description;
-        this.startingDirectory = startingDirectory;
-    }
 
     public Job() {
     }
@@ -144,5 +137,13 @@ public class Job {
 
     public void setPosition(int position) {
         this.position = position;
+    }
+
+    public File getLogFile() {
+        return logFile;
+    }
+
+    public void setLogFile(File logFile) {
+        this.logFile = logFile;
     }
 }

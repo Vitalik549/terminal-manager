@@ -36,7 +36,7 @@ function drawGroup(group) {
     el.addClass('ui-sortable-handle');
 
 
-    var header = $("<div />");
+    var header = $("<div class='group-header'/>");
     header.text(group.name);
     header.attr('data-toggle', 'collapse');
     header.attr('data-target', '[job-container="' +group.name+'"]');
@@ -59,10 +59,10 @@ function drawGroup(group) {
 }
 
 function drawJobs(parent, group) {
-    var el = $("<ul />");
-    el.addClass('job-unordered-list');
+    var el = $("<div class='container-fluid job-container'/>");
+
     parent.append(el);
-   // el.sortable();
+
 
     el.attr('id', 'jobs-list-' + group.name);
     el.sortable();
@@ -75,18 +75,22 @@ function drawJobs(parent, group) {
 }
 
 function drawJob(parent, job) {
-    var el = $("<li class='row justify-content-between'/>");
+    var el = $('<div class="row justify-content-between  text-nowrap"/>');
+
     el.data(job);
     el.attr('job-id', job.name);
-    el.append($("<div class='job-name col-md-6'>" + job.name + "</div>"));
+    el.append($("<div class='job-name col-md-7 text-nowrap'>" + job.name + "</div>"));
+
+    var btnWrapper = $("<div class='col-md-5'/>");
 
     $(parent).append(el);
+    el.append(btnWrapper);
 
-    drawJobControllers(el, job);
+    drawJobControllers(btnWrapper, job);
 }
 
 function drawJobControllers(parent, job) {
-    var buttons = $("<div class='btn-group col-md-6'/>");
+    var buttons = $("<div class='btn-group'/>");
     parent.append(buttons);
 
     drawStartJobBtn(buttons, job);
@@ -103,7 +107,7 @@ function drawStartJobBtn(parent, job) {
 }
 
 function drawReadLogButton(parent, job){
-    var btn = $('<button type="button" class="btn read-log-btn">Show log</button>');
+    var btn = $('<button type="button" class="btn read-log-btn">Logs</button>');
     parent.append(btn);
     btn.click(function () {
         console.log(job);

@@ -14,6 +14,8 @@ import java.util.List;
 @Component
 public class Executor {
 
+    public static File file = new File("/Users/admin/Desktop/log.txt");
+
     private static ThreadPoolTaskExecutor executor;
     private static List<Job> RUNNING = Collections.synchronizedList(new ArrayList<>());
 
@@ -66,7 +68,7 @@ public class Executor {
                 job.setProcess(process);
                 RUNNING.add(job);
 
-                ProcessHelper.logProcess(process);
+                ProcessHelper.logProcess(process, job.getLogFile());
                 RUNNING.remove(job);
             } catch (IOException io) {
                 System.out.println("Failed to execute " + job);

@@ -1,11 +1,15 @@
 package com.manager.terminal.utils;
 
+import com.manager.terminal.entities.Executor;
 import com.manager.terminal.entities.Job;
 import com.sun.istack.internal.Nullable;
 import org.apache.tomcat.util.http.fileupload.util.Streams;
 
 import java.io.*;
 import java.lang.reflect.Field;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -17,7 +21,7 @@ public class ProcessHelper {
         StringBuilder builder = new StringBuilder("ps u -p");
         Arrays.stream(pids).forEach(pid-> builder.append(" ").append(String.valueOf(pid)));
         try {
-            logProcess(execute(builder.toString()));
+            logProcess(execute(builder.toString()), Executor.file);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -100,17 +104,10 @@ public class ProcessHelper {
         return Runtime.getRuntime().exec(cmdarray, envp, dir);
     }
 
-    public static void logProcess(Process process) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        String line;
-        while ((line = reader.readLine()) != null) {
-            System.out.print(line + "\n");
-        }
+    public static void logProcess(Process process, File file) throws IOException {
+        Files.copy(process.getInputStream(), Paths.get(file.toURI()), StandardCopyOption.REPLACE_EXISTING);
 
-        reader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-        while ((line = reader.readLine()) != null) {
-            System.out.print(line + "\n");
-        }
+        Files.lines(file.toPath()).forEach(System.out::println);
     }
 
     public static List<Integer> getPIDsOfAllJobProcesses(Job job) {
