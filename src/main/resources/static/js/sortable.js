@@ -31,50 +31,49 @@ function drawTable(data) {
 
 function drawGroup(group) {
     var el = $("<li />");
-
-    el.addClass('ui-state-default');
-    el.addClass('ui-sortable-handle');
-
-
     var header = $("<div class='group-header'/>");
+    var jobContainer = $("<div />");
+
+    $(TABLE).append(el.append(header, jobContainer));
+
+    el.addClass('ui-state-default ui-sortable-handle');
+    el.attr('group', group.name);
+
     header.text(group.name);
     header.attr('data-toggle', 'collapse');
     header.attr('data-target', '[job-container="' +group.name+'"]');
 
-    var jobContainer = $("<div />");
-    jobContainer.attr('job-container',group.name);
-    jobContainer.addClass('collapse');
 
+    jobContainer.attr('job-container',group.name);
     jobContainer.attr('group-name', group.name);
+    jobContainer.addClass('collapse jobs-data-container');
     jobContainer.data(group);
 
 
-    $(TABLE).append(el);
-    el.append(header);
-    el.append(jobContainer);
-
     if (!!group.jobs){
-        drawJobs(jobContainer, group);
+        drawJobs(group);
     }
 }
 
-function drawJobs(parent, group) {
+function $g(group){
+       return $('[group=\''+ group.name || group +'\']');
+}
+
+function drawJobs(group) {
     var el = $("<div class='container-fluid job-container'/>");
 
-    parent.append(el);
-
+    $g(group).find('.jobs-data-container').append(el);
 
     el.attr('id', 'jobs-list-' + group.name);
     el.sortable();
     el.disableSelection();
 
-
     for (var i = 0; i < group.jobs.length; i++) {
-        drawJob(el, group.jobs[i]);
+        drawJob(group, group.jobs[i]);
     }
 }
 
-function drawJob(parent, job) {
+function drawJob(group, job) {
     var el = $('<div class="row justify-content-between  text-nowrap"/>');
 
     el.data(job);
@@ -83,7 +82,7 @@ function drawJob(parent, job) {
 
     var btnWrapper = $("<div class='col-md-5'/>");
 
-    $(parent).append(el);
+    $g(group).find('.job-container').append(el);
     el.append(btnWrapper);
 
     drawJobControllers(btnWrapper, job);
