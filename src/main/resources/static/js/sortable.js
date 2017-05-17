@@ -1,6 +1,5 @@
 var TABLE = "#sortable";
 
-
 drawTable(readData().groups);
 
 
@@ -111,8 +110,6 @@ function drawReadLogButton(parent, job){
     btn.click(function () {
         console.log(job);
     });
-
-
 }
 
 function startJob(job) {
