@@ -1,5 +1,7 @@
 package com.manager.terminal.entities;
 
+import com.manager.terminal.utils.LogStrategy;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,10 +15,12 @@ public class Job {
     private String command;
     private int position;
     private Integer groupId;
-    private String startingDirectory;
+    private File startingDirectory;
     transient private Process process;
-    private long pid = -1;
-    private File logFile = Executor.file;
+    private File baseLogFile;
+
+    private LogStrategy logStrategy;
+
     private List<Integer> processTree = new ArrayList<>();
 
     public Job() {
@@ -62,22 +66,11 @@ public class Job {
         this.process = process;
     }
 
-    public long getPid() {
-        return pid;
-    }
-
-    public void setPid(long pid) {
-        this.pid = pid;
-    }
-
-    public String getStartingDirectory() {
-        if (startingDirectory == null) {
-            return ".";
-        }
+    public File getStartingDirectory() {
         return startingDirectory;
     }
 
-    public void setStartingDirectory(String startingDirectory) {
+    public void setStartingDirectory(File startingDirectory) {
         this.startingDirectory = startingDirectory;
     }
 
@@ -91,7 +84,7 @@ public class Job {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), id, name, description, command, startingDirectory, process, pid, processTree);
+        return Objects.hash(super.hashCode(), id, name, description, command, startingDirectory, process, processTree);
     }
 
     @Override
@@ -106,7 +99,6 @@ public class Job {
                 Objects.equals(command, job.command) &&
                 Objects.equals(startingDirectory, job.startingDirectory) &&
                 Objects.equals(process, job.process) &&
-                Objects.equals(pid, job.pid) &&
                 Objects.equals(processTree, job.processTree);
     }
 
@@ -118,7 +110,6 @@ public class Job {
                 ", description='" + description + '\'' +
                 ", command='" + command + '\'' +
                 ", startingDirectory='" + startingDirectory + '\'' +
-                ", pid='" + pid + '\'' +
                 ", processTree=" + processTree +
                 '}';
     }
@@ -139,11 +130,33 @@ public class Job {
         this.position = position;
     }
 
-    public File getLogFile() {
-        return logFile;
+    public File getBaseLogFile() {
+        return baseLogFile;
     }
 
-    public void setLogFile(File logFile) {
-        this.logFile = logFile;
+
+    public LogStrategy getLogStrategy() {
+        return logStrategy;
     }
+
+    public void setLogStrategy(String logStrategy) {
+        this.logStrategy = LogStrategy.get(logStrategy);
+    }
+
+
+    public void setBaseLogFile(String baseLogFile) {
+        File file = new File(baseLogFile);
+        File dir = file.getParentFile();
+        if (!dir.isDirectory()) throw new RuntimeException("There's no directory: " + dir.getAbsolutePath());
+        if (!dir.exists()) throw new RuntimeException("Parent dir doesn't exist: " + dir.getAbsolutePath());
+        this.baseLogFile = file;
+    }
+
+
+    public Job initializeAdditionalFields() {
+
+        return this;
+    }
+
+
 }

@@ -10,10 +10,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
-    <link type="text/css" rel="stylesheet" href="css/page.css"/>
-    <link type="text/css" rel="stylesheet" href="css/topMenu.css"/>
-    <link type="text/css" rel="stylesheet" href="css/sortable.css"/>
+
 
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -25,7 +22,9 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
-
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
+    <link type="text/css" rel="stylesheet" href="css/topMenu.css"/>
+    <link type="text/css" rel="stylesheet" href="css/sortable.css"/>
 </head>
 
 
@@ -35,20 +34,20 @@
     <li><a href="/jobs">Jobs</a></li>
 </ul>
 
+<div id="left-panel">
+    <div id="panel-header">Header</div>
+    <div id="panel-data">
+        <ul id="sortable"></ul>
+    </div>
+
+</div>
+
 <div id="create-group-form">
     Name: <input type="text" name="name"/> <br/>
     Description: <input type="text" name="description"/> <br/>
     Starting directory: <input type="text" name="startingDirectory"/> <br/>
+    <input type="button" id="submit-group" value="Create Group" onclick="submitGroup()"/>
 </div>
-
-<input type="button" id="submit-group" value="Create Group" onclick="submitGroup()"/>
-
-
-<div id="groups-panel">
-    <div id="panel-header">Header</div>
-    <ul id="sortable"></ul>
-</div>
-
 
 <script src="js/storage.js"/>
 <script src="js/sortable.js"/>

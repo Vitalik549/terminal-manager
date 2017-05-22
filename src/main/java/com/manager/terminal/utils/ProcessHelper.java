@@ -100,14 +100,14 @@ public class ProcessHelper {
     }
 
     public static Process execute(String[] cmdarray, @Nullable String[] envp, File dir) throws IOException {
-
         return Runtime.getRuntime().exec(cmdarray, envp, dir);
     }
 
     public static void logProcess(Process process, File file) throws IOException {
+
         Files.copy(process.getInputStream(), Paths.get(file.toURI()), StandardCopyOption.REPLACE_EXISTING);
 
-        Files.lines(file.toPath()).forEach(System.out::println);
+        Files.lines(file.toPath()).forEach(System.out::println); //todo remove
     }
 
     public static List<Integer> getPIDsOfAllJobProcesses(Job job) {

@@ -1,4 +1,18 @@
-#sortable { list-style-type: none; margin: 0; padding: 0; max-width: 25%; }
+body {
+    margin: 0;
+    background-color: #edeef0;
+}
+
+#left-panel{
+    width: 25% ;
+    height: 100% ;
+    background-color: grey;
+    position:absolute;
+}
+
+ul {
+        margin: 0; padding: 0; max-width: 100%; list-style-type: none;
+}
 
 #sortable>li {
         max-width: 100%;
@@ -6,22 +20,23 @@
         font-size: 1.4em;
 }
 
-ul {
-        margin: 0; padding: 0; max-width: 100%;
-}
-
-li {
-        list-style-type: none;
-}
-
 .job-unordered-list li{
         font-size: 0.8em;
 }
 
 .group-header{
-background-color: ##D3D3D3;
+    background: #D3D3D3;
+    position:relative;
+    cursor: move;
 }
 
+.group-header:hover .header-icon{
+     display: block;
+}
+
+.header-icon {
+    display: none;
+}
 
 .text-nowrap {
    overflow: hidden;

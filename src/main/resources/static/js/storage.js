@@ -99,7 +99,7 @@ var g1 = {
 }
 
 var g3 = {
-  "name": "Project name 3",
+  "name": "Project iterate log",
   "description": "descr3",
  "startingDirectory" : "/Users/admin/",
 "jobs" : [
@@ -107,13 +107,16 @@ var g3 = {
   "name": "Job from group 3",
   "description": "prints directory 5 time",
   "command" : "pwd && pwd && pwd && pwd && pwd",
-  "startingDirectory" : "/Users/admin/Desktop"
+  "startingDirectory" : "/Users/admin/Desktop",
+  "baseLogFile" : "/Users/admin/Desktop/zzz/test.txt"
 },
 {
-  "name": "Job 2 from group 3",
+  "name": "Job to ITERATE log file",
   "description": "prints directory 2 time",
   "command" : "pwd && pwd",
-  "startingDirectory" : "/Users/admin/Documents"
+  "startingDirectory" : "/Users/admin/Documents",
+  "baseLogFile" : "/Users/admin/Desktop/iter.txt",
+  "logStrategy" : "iterate"
 }]
 }
 
@@ -126,13 +129,17 @@ var g4 = {
   "name": "maven clean",
   "description": "cleaning targets",
   "command" : "mvn clean",
-  "startingDirectory" : "/Users/admin/work/projects/crud-tests"
+  "startingDirectory" : "/Users/admin/work/projects/crud-tests",
+  "baseLogFile" : "/Users/admin/Desktop/crud_clean_log.txt",
+  "logStrategy" : "append"
 },
 {
   "name": "maven test",
   "description": "starting tests",
   "command" : "mvn test",
-  "startingDirectory" : "/Users/admin/work/projects/crud-tests"
+  "startingDirectory" : "/Users/admin/work/projects/crud-tests",
+  "baseLogFile" : "/Users/admin/Desktop/crud_test_log.txt",
+  "logStrategy" : "override"
 }]
 }
 
@@ -148,6 +155,14 @@ var g2 = {
   "command" : "pwd",
   "startingDirectory" : "/Users/admin/Documents"
 }]
+}
+
+function restart(){
+localStorage.clear();
+addGroup(g1);
+addGroup(g2);
+addGroup(g3);
+addGroup(g4);
 }
 
 var groups = [g1,g2]

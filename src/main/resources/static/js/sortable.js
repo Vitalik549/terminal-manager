@@ -3,6 +3,17 @@ var TABLE = "#sortable";
 drawTable(readData().groups);
 
 
+$('#left-panel')
+    .resizable({
+       // helper: "ui-resizable-helper",
+        containment: "parent",
+        maxWidth: 1000,
+        minWidth: 200,
+        distance: 30,
+        handles: "e"
+
+    });
+
 $(function () {
     $(TABLE).sortable({
         change: function (e, ui) {
@@ -10,15 +21,30 @@ $(function () {
         },
         stop: function (e, ui) {
             console.log('stop');
-               reSaveTableData();
-        }
+               reOrderTableData();
+        },
+        handle: '.group-header',
+        cursor: "move",
+        items: "> li"
+
     });
     $(TABLE).disableSelection();
 });
 
-function reSaveTableData(){
+function serializeTable(){
+    return $(TABLE).sortable("serialize", {attribute: "group"});
+
+}
+
+
+function reOrderTableData(){
     var data = readData();
-    data.groups = getGroupsFromTable();
+    var order = $("#sortable").sortable("toArray", {attribute: "group"});
+
+    data.groups
+        .sort(function(a, b){
+                 return order.indexOf(a.name) > order.indexOf(b.name);
+             });
     writeData(data)
 }
 
@@ -29,21 +55,24 @@ function drawTable(data) {
 }
 
 function drawGroup(group) {
-    var el = $("<li />");
-    var header = $("<div class='group-header'/>");
+    var el = $("<li class='ui-state-default'/>");
+    el.attr('group', group.name);
+    el.attr('id', "_" +  group.name);
+
+    var header = $("<div class='group-header container-fluid'/>");
     var jobContainer = $("<div />");
 
     $(TABLE).append(el.append(header, jobContainer));
 
-    el.addClass('ui-state-default ui-sortable-handle');
-    el.attr('group', group.name);
 
-    header.text(group.name);
     header.attr('data-toggle', 'collapse');
-    header.attr('data-target', '[job-container="' +group.name+'"]');
+    header.attr('data-target', '[group-name="' +group.name+'"]');
+    //header.append("<span class='col-lg-1 col-lg-push-1 glyphicon glyphicon-align-justify' />");
+    header.append("<div class='col-lg-10 text-nowrap' >" + group.name+ "</div>");
+    header.append("<div class='col-lg-2 header-icon glyphicon glyphicon-cog' />");
 
 
-    jobContainer.attr('job-container',group.name);
+
     jobContainer.attr('group-name', group.name);
     jobContainer.addClass('collapse jobs-data-container');
     jobContainer.data(group);
@@ -64,12 +93,10 @@ function drawJobs(group) {
     $g(group).find('.jobs-data-container').append(el);
 
     el.attr('id', 'jobs-list-' + group.name);
-    el.sortable();
-    el.disableSelection();
 
-    for (var i = 0; i < group.jobs.length; i++) {
-        drawJob(group, group.jobs[i]);
-    }
+    groups[0].jobs.forEach(function(job){
+      drawJob(group, job);
+    })
 }
 
 function drawJob(group, job) {
@@ -122,14 +149,6 @@ function startJob(job) {
      }).done(function() {
          console.log('started ' + job)
      });
-}
-
-function getGroupsFromTable(){
-    var arr = [];
-    $('#sortable').find('[group-name]').each(function(){
-        arr.push(jQuery.data(this))
-    });
-    return arr;
 }
 
 function submitGroup() {

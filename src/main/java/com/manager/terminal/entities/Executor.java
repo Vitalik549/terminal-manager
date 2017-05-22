@@ -11,6 +11,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.manager.terminal.utils.FileUtils.createLogFile;
+import static com.manager.terminal.utils.FileUtils.getRedirect;
+import static java.lang.ProcessBuilder.*;
+
 @Component
 public class Executor {
 
@@ -62,16 +66,23 @@ public class Executor {
 
     private Runnable jobToRunnable(Job job) {
         return () -> {
+            File logFile = createLogFile(job);
+            Redirect logsRedirect = getRedirect(job.getLogStrategy(), logFile);
+
+            ProcessBuilder processBuilder = new ProcessBuilder(Env.BASH, Env.BASH_COMMAND_PARAM, job.getCommand())
+                    .directory(job.getStartingDirectory())
+                    .redirectOutput(logsRedirect)
+                    .redirectError(logsRedirect);
+
             try {
-                String[] cmd = {Env.BASH, Env.BASH_COMMAND_PARAM, job.getCommand()};
-                Process process = ProcessHelper.execute(cmd, null, new File(job.getStartingDirectory()));
+                Process process = processBuilder.start();
                 job.setProcess(process);
                 RUNNING.add(job);
-
-                ProcessHelper.logProcess(process, job.getLogFile());
-                RUNNING.remove(job);
             } catch (IOException io) {
                 System.out.println("Failed to execute " + job);
+            }finally {
+                RUNNING.remove(job);
+                System.out.println("FINISHED: " + job);
             }
         };
     }
