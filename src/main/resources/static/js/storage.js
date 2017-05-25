@@ -140,7 +140,16 @@ var g4 = {
   "startingDirectory" : "/Users/admin/work/projects/crud-tests",
   "baseLogFile" : "/Users/admin/Desktop/crud_test_log.txt",
   "logStrategy" : "override"
-}]
+},
+{
+  "name": "test job",
+  "description": "starting tests",
+  "command" : "mvn --help",
+  "startingDirectory" : "/Users/admin/work/projects/crud-tests",
+  "baseLogFile" : "/Users/admin/Desktop/ZZZZZ.txt",
+  "logStrategy" : "append"
+}
+]
 }
 
 

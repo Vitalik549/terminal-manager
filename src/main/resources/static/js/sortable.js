@@ -8,8 +8,8 @@ $('#left-panel')
        // helper: "ui-resizable-helper",
         containment: "parent",
         maxWidth: 1000,
-        minWidth: 200,
-        distance: 30,
+        minWidth: 225,
+        distance: 10,
         handles: "e"
 
     });
@@ -59,7 +59,7 @@ function drawGroup(group) {
     el.attr('group', group.name);
     el.attr('id', "_" +  group.name);
 
-    var header = $("<div class='group-header container-fluid'/>");
+    var header = $("<div class='group-header container-fluid itm'/>");
     var jobContainer = $("<div />");
 
     $(TABLE).append(el.append(header, jobContainer));
@@ -68,8 +68,8 @@ function drawGroup(group) {
     header.attr('data-toggle', 'collapse');
     header.attr('data-target', '[group-name="' +group.name+'"]');
     //header.append("<span class='col-lg-1 col-lg-push-1 glyphicon glyphicon-align-justify' />");
-    header.append("<div class='col-lg-10 text-nowrap' >" + group.name+ "</div>");
-    header.append("<div class='col-lg-2 header-icon glyphicon glyphicon-cog' />");
+    header.append("<div class='col-xs-10 text-nowrap itm' >" + group.name+ "</div>");
+    header.append("<div class='col-xs-2 header-icon glyphicon glyphicon-cog itm' />");
 
 
 
@@ -94,7 +94,7 @@ function drawJobs(group) {
 
     el.attr('id', 'jobs-list-' + group.name);
 
-    groups[0].jobs.forEach(function(job){
+    group.jobs.forEach(function(job){
       drawJob(group, job);
     })
 }
@@ -104,9 +104,9 @@ function drawJob(group, job) {
 
     el.data(job);
     el.attr('job-id', job.name);
-    el.append($("<div class='job-name col-md-7 text-nowrap'>" + job.name + "</div>"));
+    el.append($("<div class='job-name col-xs-6 text-nowrap itm'>" + job.name + "</div>"));
 
-    var btnWrapper = $("<div class='col-md-5'/>");
+    var btnWrapper = $("<div class='col-xs-6 itm'/>");
 
     $g(group).find('.job-container').append(el);
     el.append(btnWrapper);
@@ -115,31 +115,32 @@ function drawJob(group, job) {
 }
 
 function drawJobControllers(parent, job) {
-    var buttons = $("<div class='btn-group'/>");
+    var buttons = $("<div class='pull-right btn-group btn-group-xs' aria-label='...' />");
     parent.append(buttons);
 
-    drawStartJobBtn(buttons, job);
-    drawReadLogButton(buttons, job);
+    drawJobButtons(buttons, job);
+
 }
 
-
-function drawStartJobBtn(parent, job) {
-    var btn = $('<button type="button" class="btn btn-success start-job-btn">Start</button>');
-    parent.append(btn);
-    btn.click(function () {
-        startJob(job);
-    });
+function mock(el){
+     console.log(el);
 }
 
-function drawReadLogButton(parent, job){
-    var btn = $('<button type="button" class="btn read-log-btn">Logs</button>');
+function drawJobButtons(parent, job) {
+     drawJobButton(parent, 'start', 'glyphicon-play', function () {startJob(job);});
+     drawJobButton(parent, 'stop', 'glyphicon-stop', function () {mock(job);});
+     drawJobButton(parent, 'view log', 'glyphicon-eye-open', function () {mock(job);});
+     drawJobButton(parent, 'load log', 'glyphicon-download-alt', function () {mock(job);});
+}
+
+function drawJobButton(parent, name, glyphicon, func){
+    var btn = $('<button type="button" class="btn btn-default" ><span class="glyphicon '+glyphicon+'" aria-hidden="true"></span></button>');
     parent.append(btn);
-    btn.click(function () {
-        console.log(job);
-    });
+    btn.click(func);
 }
 
 function startJob(job) {
+        console.log("starting " + job.name);
      $.ajax({
          type: "POST",
          url: "/start/job",

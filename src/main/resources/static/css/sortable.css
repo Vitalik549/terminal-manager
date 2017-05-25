@@ -4,7 +4,7 @@ body {
 }
 
 #left-panel{
-    width: 25% ;
+    width: 20% ;
     height: 100% ;
     background-color: grey;
     position:absolute;
@@ -14,24 +14,25 @@ ul {
         margin: 0; padding: 0; max-width: 100%; list-style-type: none;
 }
 
-#sortable>li {
-        max-width: 100%;
-        max-height: 100%;
-        font-size: 1.4em;
-}
-
-.job-unordered-list li{
-        font-size: 0.8em;
-}
-
 .group-header{
     background: #D3D3D3;
     position:relative;
     cursor: move;
+    font-size: 1.4em;
+}
+
+.itm{
+     padding-right:5px;
+     padding-left:5px;
+}
+
+.row {
+    margin-top:2px;
+    margin-bottom:2px;
 }
 
 .group-header:hover .header-icon{
-     display: block;
+     display: inline-block;
 }
 
 .header-icon {
@@ -42,6 +43,16 @@ ul {
    overflow: hidden;
    text-overflow: ellipsis;
    white-space: nowrap;
+}
+
+.flexible {
+    display: inline-flex;
+    height: 100%;
+}
+
+
+.ui-resizable-e{
+cursor: ew-resize;
 }
 
 
