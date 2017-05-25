@@ -2,13 +2,35 @@ package com.manager.terminal.utils;
 
 import com.manager.terminal.entities.Job;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.input.ReversedLinesFileReader;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static java.lang.ProcessBuilder.Redirect;
 
 public class FileUtils {
+
+    public static List<String> getFileTail(File file, int rows){
+        List<String> logs = new ArrayList<>();
+        int i = 0 ;
+        String line;
+
+        try (ReversedLinesFileReader reader = new ReversedLinesFileReader(file)) {
+            while ((line =reader.readLine())!= null && i++ < rows) {
+                logs.add(line);
+            }
+
+            Collections.reverse(logs);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return logs;
+    }
 
     public static Redirect getRedirect(LogStrategy logStrategy, File logFile) {
         return logStrategy.equals(LogStrategy.APPEND)
