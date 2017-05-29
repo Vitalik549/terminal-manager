@@ -69,8 +69,7 @@ function drawGroup(group) {
     header.attr('data-target', '[group-name="' +group.name+'"]');
     //header.append("<span class='col-lg-1 col-lg-push-1 glyphicon glyphicon-align-justify' />");
     header.append("<div class='col-xs-10 text-nowrap itm' >" + group.name+ "</div>");
-    header.append("<div class='col-xs-2 header-icon glyphicon glyphicon-cog itm' />");
-
+    header.append("<button data-toggle='modal' data-target='#modal' class='col-xs-2 header-icon glyphicon glyphicon-cog itm' />");
 
 
     jobContainer.attr('group-name', group.name);
@@ -140,7 +139,7 @@ function drawJobButton(parent, name, glyphicon, func){
 }
 
 function startJob(job) {
-        console.log("starting " + job.name);
+        console.log("starting " + job.name); //todo remove
      $.ajax({
          type: "POST",
          url: "/start/job",

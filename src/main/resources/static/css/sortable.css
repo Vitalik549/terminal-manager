@@ -33,6 +33,7 @@ ul {
 
 .group-header:hover .header-icon{
      display: inline-block;
+     cursor: pointer;
 }
 
 .header-icon {
@@ -54,5 +55,24 @@ ul {
 .ui-resizable-e{
 cursor: ew-resize;
 }
+
+.scrollable{
+    width: 100%;
+    max-height: 500px;
+    overflow: scroll;
+}
+
+.list-group-item-heading{
+font-size: 1.4em;
+}
+
+.list-group-item-text{
+font-size: 14px;
+font-weight:normal;
+height:20px;
+line-height:20px
+
+}
+
 
 

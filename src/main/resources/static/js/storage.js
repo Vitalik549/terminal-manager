@@ -152,6 +152,134 @@ var g4 = {
 ]
 }
 
+var g5 = {
+  "name": "CRUD mock",
+  "description": "crud mock for data amount",
+ "startingDirectory" : "/Users/admin/work/projects/crud-tests",
+"jobs" : [
+{
+  "name": "maven clean",
+  "description": "cleaning targets",
+  "command" : "mvn clean",
+  "startingDirectory" : "/Users/admin/work/projects/crud-tests",
+  "baseLogFile" : "/Users/admin/Desktop/crud_clean_log.txt",
+  "logStrategy" : "append"
+},
+{
+  "name": "maven test",
+  "description": "starting tests",
+  "command" : "mvn test",
+  "startingDirectory" : "/Users/admin/work/projects/crud-tests",
+  "baseLogFile" : "/Users/admin/Desktop/crud_test_log.txt",
+  "logStrategy" : "override"
+},
+{
+  "name": "test job",
+  "description": "starting tests",
+  "command" : "mvn --help",
+  "startingDirectory" : "/Users/admin/work/projects/crud-tests",
+  "baseLogFile" : "/Users/admin/Desktop/ZZZZZ.txt",
+  "logStrategy" : "append"
+}
+]
+}
+
+var g6 = {
+  "name": "CRUD mock2",
+  "description": "crud mock for data amount",
+ "startingDirectory" : "/Users/admin/work/projects/crud-tests",
+"jobs" : [
+{
+  "name": "maven clean",
+  "description": "cleaning targets",
+  "command" : "mvn clean",
+  "startingDirectory" : "/Users/admin/work/projects/crud-tests",
+  "baseLogFile" : "/Users/admin/Desktop/crud_clean_log.txt",
+  "logStrategy" : "append"
+},
+{
+  "name": "maven test",
+  "description": "starting tests",
+  "command" : "mvn test",
+  "startingDirectory" : "/Users/admin/work/projects/crud-tests",
+  "baseLogFile" : "/Users/admin/Desktop/crud_test_log.txt",
+  "logStrategy" : "override"
+},
+{
+  "name": "test job",
+  "description": "starting tests",
+  "command" : "mvn --help",
+  "startingDirectory" : "/Users/admin/work/projects/crud-tests",
+  "baseLogFile" : "/Users/admin/Desktop/ZZZZZ.txt",
+  "logStrategy" : "append"
+}
+]
+}
+
+var g7 = {
+  "name": "CRUD mock3",
+  "description": "crud mock for data amount",
+ "startingDirectory" : "/Users/admin/work/projects/crud-tests",
+"jobs" : [
+{
+  "name": "maven clean",
+  "description": "cleaning targets",
+  "command" : "mvn clean",
+  "startingDirectory" : "/Users/admin/work/projects/crud-tests",
+  "baseLogFile" : "/Users/admin/Desktop/crud_clean_log.txt",
+  "logStrategy" : "append"
+},
+{
+  "name": "maven test",
+  "description": "starting tests",
+  "command" : "mvn test",
+  "startingDirectory" : "/Users/admin/work/projects/crud-tests",
+  "baseLogFile" : "/Users/admin/Desktop/crud_test_log.txt",
+  "logStrategy" : "override"
+},
+{
+  "name": "test job",
+  "description": "starting tests",
+  "command" : "mvn --help",
+  "startingDirectory" : "/Users/admin/work/projects/crud-tests",
+  "baseLogFile" : "/Users/admin/Desktop/ZZZZZ.txt",
+  "logStrategy" : "append"
+}
+]
+}
+
+var g8 = {
+  "name": "CRUD mock4",
+  "description": "crud mock for data amount",
+ "startingDirectory" : "/Users/admin/work/projects/crud-tests",
+"jobs" : [
+{
+  "name": "maven clean",
+  "description": "cleaning targets",
+  "command" : "mvn clean",
+  "startingDirectory" : "/Users/admin/work/projects/crud-tests",
+  "baseLogFile" : "/Users/admin/Desktop/crud_clean_log.txt",
+  "logStrategy" : "append"
+},
+{
+  "name": "maven test",
+  "description": "starting tests",
+  "command" : "mvn test",
+  "startingDirectory" : "/Users/admin/work/projects/crud-tests",
+  "baseLogFile" : "/Users/admin/Desktop/crud_test_log.txt",
+  "logStrategy" : "override"
+},
+{
+  "name": "test job",
+  "description": "starting tests",
+  "command" : "mvn --help",
+  "startingDirectory" : "/Users/admin/work/projects/crud-tests",
+  "baseLogFile" : "/Users/admin/Desktop/ZZZZZ.txt",
+  "logStrategy" : "append"
+}
+]
+}
+
 
 var g2 = {
   "name": "g2",
@@ -166,12 +294,14 @@ var g2 = {
 }]
 }
 
-function restart(){
+function r(){
 localStorage.clear();
 addGroup(g1);
 addGroup(g2);
 addGroup(g3);
 addGroup(g4);
+addGroup(g5);
+addGroup(g6);
+addGroup(g7);
+addGroup(g8);
 }
-
-var groups = [g1,g2]
