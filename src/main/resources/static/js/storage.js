@@ -32,9 +32,9 @@
 
     function addGroup(group, data) {
         data = data || readData();
-        var existing = findGroupByName(group.name, data);
+        var result = findGroupByName(group.name, data);
 
-        if (!existing.group && validateGroup(group)) {
+        if (!result.group && validateGroup(group)) {
             data.groups.push(group);
             writeData(data);
             return group;
@@ -49,9 +49,9 @@
 
     function removeGroupByName(name, data) {
         data = data || readData();
-        var existing = findGroupByName(name, data);
+        var result = findGroupByName(name, data);
 
-        if (existing) {
+        if (existing.group) {
             data.groups.splice(existing.index, 1);
             writeData(data);
             return existing;
@@ -62,9 +62,9 @@
 
     function updateGroup(group, data) {
         data = data || readData();
-        var existing = findGroupByName(group.name, data);
+        var result = findGroupByName(group.name, data);
 
-        if (existing) {
+        if (result.group) {
             Object.assign(
                 data.groups[existing.index],
                 group
@@ -280,6 +280,70 @@ var g8 = {
 ]
 }
 
+var g9 = {
+  "name": "CRUD mock5",
+  "description": "crud mock for data amount",
+ "startingDirectory" : "/Users/admin/work/projects/crud-tests",
+"jobs" : [
+{
+  "name": "maven clean",
+  "description": "cleaning targets",
+  "command" : "mvn clean",
+  "startingDirectory" : "/Users/admin/work/projects/crud-tests",
+  "baseLogFile" : "/Users/admin/Desktop/crud_clean_log.txt",
+  "logStrategy" : "append"
+},
+{
+  "name": "maven test",
+  "description": "starting tests",
+  "command" : "mvn test",
+  "startingDirectory" : "/Users/admin/work/projects/crud-tests",
+  "baseLogFile" : "/Users/admin/Desktop/crud_test_log.txt",
+  "logStrategy" : "override"
+},
+{
+  "name": "test job",
+  "description": "starting tests",
+  "command" : "mvn --help",
+  "startingDirectory" : "/Users/admin/work/projects/crud-tests",
+  "baseLogFile" : "/Users/admin/Desktop/ZZZZZ.txt",
+  "logStrategy" : "append"
+}
+]
+}
+
+var g10 = {
+  "name": "CRUD mock6",
+  "description": "crud mock for data amount",
+ "startingDirectory" : "/Users/admin/work/projects/crud-tests",
+"jobs" : [
+{
+  "name": "maven clean",
+  "description": "cleaning targets",
+  "command" : "mvn clean",
+  "startingDirectory" : "/Users/admin/work/projects/crud-tests",
+  "baseLogFile" : "/Users/admin/Desktop/crud_clean_log.txt",
+  "logStrategy" : "append"
+},
+{
+  "name": "maven test",
+  "description": "starting tests",
+  "command" : "mvn test",
+  "startingDirectory" : "/Users/admin/work/projects/crud-tests",
+  "baseLogFile" : "/Users/admin/Desktop/crud_test_log.txt",
+  "logStrategy" : "override"
+},
+{
+  "name": "test job",
+  "description": "starting tests",
+  "command" : "mvn --help",
+  "startingDirectory" : "/Users/admin/work/projects/crud-tests",
+  "baseLogFile" : "/Users/admin/Desktop/ZZZZZ.txt",
+  "logStrategy" : "append"
+}
+]
+}
+
 
 var g2 = {
   "name": "g2",
@@ -294,6 +358,12 @@ var g2 = {
 }]
 }
 
+var emptyGroup = {
+  "name": "Empty group",
+  "description": "2descr2",
+  "startingDirectory" : "/Users/admin/"
+}
+
 function r(){
 localStorage.clear();
 addGroup(g1);
@@ -304,4 +374,7 @@ addGroup(g5);
 addGroup(g6);
 addGroup(g7);
 addGroup(g8);
+addGroup(g9);
+addGroup(g10);
+addGroup(emptyGroup);
 }

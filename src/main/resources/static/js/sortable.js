@@ -2,7 +2,6 @@ var TABLE = "#sortable";
 
 drawTable(readData().groups);
 
-
 $('#left-panel')
     .resizable({
        // helper: "ui-resizable-helper",
@@ -55,7 +54,8 @@ function drawTable(data) {
 }
 
 function drawGroup(group) {
-    var el = $("<li class='ui-state-default'/>");
+
+    var el = $("<li class='ui-state-default group-element'/>");
     el.attr('group', group.name);
     el.attr('id', "_" +  group.name);
 
@@ -67,23 +67,23 @@ function drawGroup(group) {
 
     header.attr('data-toggle', 'collapse');
     header.attr('data-target', '[group-name="' +group.name+'"]');
-    //header.append("<span class='col-lg-1 col-lg-push-1 glyphicon glyphicon-align-justify' />");
-    header.append("<div class='col-xs-10 text-nowrap itm' >" + group.name+ "</div>");
-    header.append("<button data-toggle='modal' data-target='#modal' class='col-xs-2 header-icon glyphicon glyphicon-cog itm' />");
 
+
+    var cfg = $("<button data-toggle='modal' data-target='#modal' class='col-xs-2 header-icon glyphicon glyphicon-cog itm'/>")
+    header.append("<div class='col-xs-10 text-nowrap itm' >" + group.name+ "</div>");
+    header.append(cfg);
+    cfg.attr('group', group.name);
 
     jobContainer.attr('group-name', group.name);
     jobContainer.addClass('collapse jobs-data-container');
     jobContainer.data(group);
 
 
-    if (!!group.jobs){
-        drawJobs(group);
-    }
+    drawJobs(group);
 }
 
 function $g(group){
-       return $('[group=\''+ group.name || group +'\']');
+       return $('.group-element[group=\''+ group.name || group +'\']');
 }
 
 function drawJobs(group) {
@@ -93,7 +93,8 @@ function drawJobs(group) {
 
     el.attr('id', 'jobs-list-' + group.name);
 
-    group.jobs.forEach(function(job){
+
+    if (group.jobs) group.jobs.forEach(function(job){
       drawJob(group, job);
     })
 }

@@ -51,7 +51,6 @@ ul {
     height: 100%;
 }
 
-
 .ui-resizable-e{
 cursor: ew-resize;
 }
@@ -62,16 +61,18 @@ cursor: ew-resize;
     overflow: scroll;
 }
 
-.list-group-item-heading{
-font-size: 1.4em;
+.pull-left.glyphicon {
+padding-right: 5px;
 }
 
-.list-group-item-text{
-font-size: 14px;
-font-weight:normal;
-height:20px;
-line-height:20px
+.glyphicon-plus-sign{
+font-size: 1.3em;
+}
 
+.list-group , .list-group-item{
+border: none;
+-webkit-box-shadow: none;
+box-shadow: none;
 }
 
 
