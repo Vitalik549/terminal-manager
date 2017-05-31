@@ -59,7 +59,7 @@ function drawGroup(group) {
     el.attr('group', group.name);
     el.attr('id', "_" +  group.name);
 
-    var header = $("<div class='group-header container-fluid itm'/>");
+    var header = $("<div class='group-header container-fluid itm movable'/>");
     var jobContainer = $("<div />");
 
     $(TABLE).append(el.append(header, jobContainer));

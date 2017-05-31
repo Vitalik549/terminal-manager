@@ -20,14 +20,14 @@ function drawModalGroupJobs(group){
                   stop: function (e, ui) {
                       console.log('stop');
                   },
-                  handle: '.glyphicon-align-justify',
+                  //handle: '.glyphicon-align-justify',
                   cursor: "move"
               });
 
      $('#modal').find('#modal-list').append(list);
 
      if(group.jobs) group.jobs.forEach(function(job){
-        var item = $("<div class='list-group-item text-nowrap'/>")
+        var item = $("<div class='list-group-item text-nowrap movable'/>")
         var icon = $("<div class='pull-left glyphicon glyphicon-align-justify' />");
         item.text(job.name);
         item.append(icon);

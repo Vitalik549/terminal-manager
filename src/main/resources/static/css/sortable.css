@@ -17,8 +17,11 @@ ul {
 .group-header{
     background: #D3D3D3;
     position:relative;
-    cursor: move;
     font-size: 1.4em;
+}
+
+.movable{
+cursor: move;
 }
 
 .itm{
