@@ -68,10 +68,11 @@ function drawGroup(group) {
     header.attr('data-toggle', 'collapse');
     header.attr('data-target', '[group-name="' +group.name+'"]');
 
-
-    var cfg = $("<button data-toggle='modal' data-target='#modal' class='col-xs-2 header-icon glyphicon glyphicon-cog itm'/>")
+    var btnWrap = $("<div class='col-xs-2 itm' />");
+    var cfg = $("<span data-toggle='modal' data-target='#modal' class='pull-right header-icon glyphicon glyphicon-cog'/>")
     header.append("<div class='col-xs-10 text-nowrap itm' >" + group.name+ "</div>");
-    header.append(cfg);
+    header.append(btnWrap);
+    btnWrap.append(cfg);
     cfg.attr('group', group.name);
 
     jobContainer.attr('group-name', group.name);
