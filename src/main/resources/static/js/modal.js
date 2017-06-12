@@ -1,10 +1,20 @@
+var LogStrategy = {
+    "values" : {
+            "select" : "Select log strategy..." ,
+            "override" : "Override",
+            "append" : "Append",
+            "iterate" : "Iterate" }
+}
+
 $('#modal').on('show.bs.modal', function (event) {
   var groupName = event.relatedTarget.getAttribute('group') // Button that triggered the modal
 
   $(this).find('.modal-title').text(groupName);
 
-  drawModalGroupJobs(findGroupByName(groupName).group);
- // $(this).data("group", group);
+    var group = findGroupByName(groupName).group;
+  drawModalGroupJobs(group);
+
+  $(this).data("group", group);
 })
 
 $('#modal').on('hidden.bs.modal', function (event) {
@@ -43,11 +53,15 @@ function drawModalGroupJobs(group){
         list.append(wrap);
      });
 
-     list.append('<button type="button" class="list-group-item btn btn-sm btn-block"><span class="glyphicon glyphicon-plus-sign"></span></button>')
+     var addIcon = $('<button type="button" class="list-group-item btn btn-sm btn-block"><span class="glyphicon glyphicon-plus-sign"></span></button>');
+     addIcon.click(drawJobForm);
+
+     list.append(addIcon)
 }
 
+
+
 function drawJobForm(job){
-    console.log(job);
     $('#editor').html("");
 
     var wrapper = $("<div class='container-fluid'/>");
@@ -56,35 +70,36 @@ function drawJobForm(job){
     wrapper.append(form);
 
 
-    drawInput(form, 'Job name', job.name);
-    drawInput(form, 'Description', job.description);
-    drawInput(form, 'Command', job.command);
-    drawInput(form, 'Starting directory', job.startingDirectory);
-    drawInput(form, 'Base log file', job.baseLogFile);
-    drawSelect(form, 'Log strategy', job.logStrategy);
+    drawInput(form, 'Job name', job.name, 'name', job);
+    drawTextArea(form, 'Description', job.description,'description', job);
+    drawInput(form, 'Command', job.command,'command', job);
+    drawInput(form, 'Starting directory', job.startingDirectory,'startingDirectory', job);
+    drawInput(form, 'Base log file', job.baseLogFile,'baseLogFile', job);
+    drawSelect(form, 'Log strategy', job.logStrategy,'logStrategy', job);
 
 }
 
-var LogStrategy = {
-    "values" : {
-            "select" : "Select log strategy..." ,
-            "override" : "Override",
-            "append" : "Append",
-            "iterate" : "Iterate" }
-}
-
-function drawGroup(parent, label, value, input){
+function drawGroup(parent, label, value, input, job){
     var wrap = $("<div class='form-group'/>");
-    var elWrap = $('<div class="col-sm-10" />');
+    var elWrap = $('<div class="col-sm-9" />');
 
     parent.append(wrap);
-    wrap.append('<label class="col-sm-2 control-label">'+label+'</label>')
+    wrap.append('<label class="col-sm-3 control-label">'+label+'</label>')
     wrap.append(elWrap);
     elWrap.append(input);
+
+    input.change(function() {
+                var field = input.attr('job-input');
+
+                $modalJob(job.name)[field] = input.val();
+
+                console.log($modalJob(job.name));
+    });
 }
 
-function drawSelect(parent, label, value){
+function drawSelect(parent, label, value, id, job){
     var select = $('<select class="form-control" />')
+    select.attr('job-input', id);
 
     $.each(LogStrategy.values, function(key, value) {
          select.append($("<option></option>")
@@ -96,17 +111,54 @@ function drawSelect(parent, label, value){
 
     select.val(v.toLowerCase());
 
-    drawGroup(parent, label, value, select)
+    drawGroup(parent, label, value, select, job)
 }
 
-function drawInput(parent, label, value){
-    var input = $('<input class="form-control" id="input-'+label+'" type="text" >');
+function drawInput(parent, label, value, id, job){
+    var input = $('<input class="form-control" type="text" >');
+    input.attr('job-input', id);
 
     input.val(value);
 
-    drawGroup(parent, label, value, input)
+    drawGroup(parent, label, value, input, job)
+
+    input.change(function() {
+                $('#modal').data().group[id] = input.val();
+        });
 }
 
+
+function drawTextArea(parent, label, value, id, job){
+    var input = $('<textarea class="form-control" type="text" >');
+    input.attr('job-input', id);
+
+    input.val(value);
+
+    drawGroup(parent, label, value, input, job)
+}
+
+function getJobEditorData(){
+    var job = {
+        name : $('[job-input="name"').val(),
+        description : $('[job-input="description"').val(),
+        command : $('[job-input="command"').val(),
+        startingDirectory : $('[job-input="startingDirectory"').val(),
+        baseLogFile : $('[job-input="baseLogFile"').val(),
+        logStrategy : $('[job-input="logStrategy"').val()
+    };
+     return job;
+}
+
+
+
+function $modalJob (jobName){
+    var result =  $('#modal').data("group").jobs.filter(
+     function(job){
+        return job.name === jobName;
+     }
+    )
+    return result[0];
+}
 /*
 
 div class="container">
