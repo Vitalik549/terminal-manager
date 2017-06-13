@@ -8,13 +8,18 @@ var LogStrategy = {
 
 $('#modal').on('show.bs.modal', function (event) {
   var groupName = event.relatedTarget.getAttribute('group') // Button that triggered the modal
+  var group = findGroupByName(groupName).group;
 
-  $(this).find('.modal-title').text(groupName);
+  $(this).data('group', group);
+  $(this).find('.modal-title')
+         .text(groupName)
+         .click(drawGroupForm);
 
-    var group = findGroupByName(groupName).group;
+  $('#modal').find('.save-btn')
+    .click(function(){console.log($('#modal').data('group'));})
+    .hide();
+
   drawModalGroupJobs(group);
-
-  $(this).data("group", group);
 })
 
 $('#modal').on('hidden.bs.modal', function (event) {
@@ -40,16 +45,18 @@ function drawModalGroupJobs(group){
 
      if(group.jobs) group.jobs.forEach(function(job){
 
-        var wrap = $("<div class='list-group-item'/>")
+
         var icon = $("<div class='glyphicon glyphicon-align-justify movable'/>");
         var item = $("<div type='button' class='btn text-nowrap'/>")
-        item.click(function(){
-            drawJobForm(job);
-        });
-        item.text(job.name);
+            .text(job.name)
+            .click(function(){
+                    drawJobForm(job);
+                });
 
-        wrap.append(icon);
-        wrap.append(item);
+        var wrap = $("<div class='list-group-item'/>")
+            .append(icon)
+            .append(item);
+
         list.append(wrap);
      });
 
@@ -57,11 +64,11 @@ function drawModalGroupJobs(group){
      addIcon.click(drawJobForm);
 
      list.append(addIcon)
+     drawGroupForm();
 }
 
-
-
-function drawJobForm(job){
+function drawGroupForm(group){
+    var group = $('#modal').data("group");
     $('#editor').html("");
 
     var wrapper = $("<div class='container-fluid'/>");
@@ -69,37 +76,40 @@ function drawJobForm(job){
     $('#editor').append(wrapper);
     wrapper.append(form);
 
+    $('#editor').data('isGroup', true);
 
-    drawInput(form, 'Job name', job.name, 'name', job);
-    drawTextArea(form, 'Description', job.description,'description', job);
-    drawInput(form, 'Command', job.command,'command', job);
-    drawInput(form, 'Starting directory', job.startingDirectory,'startingDirectory', job);
-    drawInput(form, 'Base log file', job.baseLogFile,'baseLogFile', job);
-    drawSelect(form, 'Log strategy', job.logStrategy,'logStrategy', job);
+    form
+        .append(editorInput('Group name', group.name, 'name', group))
+        .append(editorTextArea('Description', group.description,'description', group))
+        .append(editorInput('Starting directory', group.startingDirectory,'startingDirectory', group));
+}
+
+function drawJobForm(job){
+
+    var wrapper = $("<div class='container-fluid'/>");
+    var form = $('<form class="form-horizontal" />');
+
+    $('#editor')
+             .html("")
+             .data('isGroup', false)
+             .append(wrapper.append(form));
+    form
+        .append(editorInput('Job name', job.name, 'name', job))
+        .append(editorTextArea('Description', job.description,'description', job))
+        .append(editorInput('Command', job.command,'command', job))
+        .append(editorInput('Starting directory', job.startingDirectory,'startingDirectory', job))
+        .append(editorInput('Base log file', job.baseLogFile,'baseLogFile', job))
+        .append(editorSelect('Log strategy', job.logStrategy,'logStrategy', job))
 
 }
 
-function drawGroup(parent, label, value, input, job){
-    var wrap = $("<div class='form-group'/>");
-    var elWrap = $('<div class="col-sm-9" />');
-
-    parent.append(wrap);
-    wrap.append('<label class="col-sm-3 control-label">'+label+'</label>')
-    wrap.append(elWrap);
-    elWrap.append(input);
-
-    input.change(function() {
-                var field = input.attr('job-input');
-
-                $modalJob(job.name)[field] = input.val();
-
-                console.log($modalJob(job.name));
-    });
+function saveObj(entity){
+    var obj = entity.isGroup? $('#modal').data("group") : $modalJob(entity.name);
+    obj[fieldName] = element.val();
 }
 
-function drawSelect(parent, label, value, id, job){
+function editorSelect(label, value, id, job){
     var select = $('<select class="form-control" />')
-    select.attr('job-input', id);
 
     $.each(LogStrategy.values, function(key, value) {
          select.append($("<option></option>")
@@ -111,30 +121,46 @@ function drawSelect(parent, label, value, id, job){
 
     select.val(v.toLowerCase());
 
-    drawGroup(parent, label, value, select, job)
+    return inputWrapper(label, value, select, id, job)
 }
 
-function drawInput(parent, label, value, id, job){
-    var input = $('<input class="form-control" type="text" >');
-    input.attr('job-input', id);
+function editorInput(label, value, id, job){
+    var input = $('<input class="form-control" type="text" >').val(value);
 
-    input.val(value);
+    return inputWrapper(label, value, input, id, job)
+}
 
-    drawGroup(parent, label, value, input, job)
+function editorTextArea(label, value, id, job){
+    var input = $('<textarea class="form-control" type="text" >')
+                    .val(value)
+                    .css("resize", "vertical");
 
-    input.change(function() {
-                $('#modal').data().group[id] = input.val();
+    return inputWrapper(label, value, input, id, job)
+}
+
+function inputWrapper(label, value, element, fieldName, entity){
+    var wrap = $("<div class='form-group'/>")
+        .append('<label class="col-sm-3 control-label">'+label+'</label>')
+        .append($('<div class="col-sm-9" />').append(element));
+
+    var attr = isEditingGroup()? 'group-input' :'job-input';
+
+    element
+        .attr(attr, fieldName)
+        .change(function() {
+           showSave('Save Job');
         });
+
+    return wrap;
 }
 
-
-function drawTextArea(parent, label, value, id, job){
-    var input = $('<textarea class="form-control" type="text" >');
-    input.attr('job-input', id);
-
-    input.val(value);
-
-    drawGroup(parent, label, value, input, job)
+function getGroupEditorData(){
+    var group = {
+        name : $('[group-input="name"').val(),
+        description : $('[group-input="description"').val(),
+        startingDirectory : $('[group-input="startingDirectory"').val()
+    };
+     return group;
 }
 
 function getJobEditorData(){
@@ -149,7 +175,14 @@ function getJobEditorData(){
      return job;
 }
 
+function showSave(text){
+    $('#modal').find('.save-btn').show().text(text);
 
+}
+
+function hideSave(){
+    $('#modal').find('.save-btn').hide();
+}
 
 function $modalJob (jobName){
     var result =  $('#modal').data("group").jobs.filter(
@@ -158,6 +191,10 @@ function $modalJob (jobName){
      }
     )
     return result[0];
+}
+
+function isEditingGroup(){
+    return $('#editor').data('isGroup');
 }
 /*
 

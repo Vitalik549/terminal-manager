@@ -47,6 +47,12 @@ function reOrderTableData(){
     writeData(data)
 }
 
+function reorderData(data, order){
+        return data.groups.sort(function(a, b){
+                 return order.indexOf(a.name) > order.indexOf(b.name);
+        });
+}
+
 function drawTable(data) {
     for (var i = 0; i < data.length; i++) {
         drawGroup(data[i]);
@@ -55,30 +61,28 @@ function drawTable(data) {
 
 function drawGroup(group) {
 
-    var el = $("<li class='ui-state-default group-element'/>");
-    el.attr('group', group.name);
-    el.attr('id', "_" +  group.name);
+    var el = $("<li class='ui-state-default group-element'/>")
+             .attr('group', group.name)
+             .attr('id', "_" +  group.name);
 
-    var header = $("<div class='group-header container-fluid itm movable'/>");
-    var jobContainer = $("<div />");
+    var header = $("<div class='group-header container-fluid itm movable'/>")
+             .attr('data-toggle', 'collapse')
+             .attr('data-target', '[group-name="' +group.name+'"]');
 
-    $(TABLE).append(el.append(header, jobContainer));
+    var jobContainer = $("<div />")
+             .attr('group-name', group.name)
+             .addClass('collapse jobs-data-container')
+             .data(group);
 
-
-    header.attr('data-toggle', 'collapse');
-    header.attr('data-target', '[group-name="' +group.name+'"]');
-
-    var btnWrap = $("<div class='col-xs-2 itm' />");
     var cfg = $("<span data-toggle='modal' data-target='#modal' class='pull-right header-icon glyphicon glyphicon-cog'/>")
-    header.append("<div class='col-xs-10 text-nowrap itm' >" + group.name+ "</div>");
-    header.append(btnWrap);
-    btnWrap.append(cfg);
-    cfg.attr('group', group.name);
+                .attr('group', group.name);
+    var btnWrap = $("<div class='col-xs-2 itm' />")
+                 .append(cfg);
 
-    jobContainer.attr('group-name', group.name);
-    jobContainer.addClass('collapse jobs-data-container');
-    jobContainer.data(group);
-
+    $(TABLE).append(
+            el.append(
+                header.append("<div class='col-xs-10 text-nowrap itm' >" + group.name+ "</div>", btnWrap),
+                jobContainer));
 
     drawJobs(group);
 }
@@ -88,12 +92,9 @@ function $g(group){
 }
 
 function drawJobs(group) {
-    var el = $("<div class='container-fluid job-container'/>");
-
-    $g(group).find('.jobs-data-container').append(el);
-
-    el.attr('id', 'jobs-list-' + group.name);
-
+    $g(group).find('.jobs-data-container')
+            .append($("<div class='container-fluid job-container'/>")
+                        .attr('id', 'jobs-list-' + group.name));
 
     if (group.jobs) group.jobs.forEach(function(job){
       drawJob(group, job);
@@ -120,7 +121,6 @@ function drawJobControllers(parent, job) {
     parent.append(buttons);
 
     drawJobButtons(buttons, job);
-
 }
 
 function mock(el){
