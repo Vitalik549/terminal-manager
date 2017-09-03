@@ -6,38 +6,49 @@ var LogStrategy = {
             "iterate" : "Iterate" }
 }
 
-$('#modal').on('show.bs.modal', function (event) {
-  var groupName = event.relatedTarget.getAttribute('group') // Button that triggered the modal
-  var group = findGroupByName(groupName).group;
+$('#modal')
+    .on('show.bs.modal', function (event) {
+         var groupName = event.relatedTarget.getAttribute('group') // Button that triggered the modal
+         var group = findGroupByName(groupName).group;
 
-  $(this).data('group', group);
-  $(this).find('.modal-title')
-         .text(groupName)
-         .click(drawGroupForm);
+         $(this).data('group', group);
+         $(this).find('.modal-title')
+                .text(groupName)
+                .click(function(){
+                         if(isSaved()){
+                              drawGroupForm();
+                         }else{
+                              showDataNotSaved();
+                         }
+                 });
 
-  $('#modal').find('.save-btn')
-    .click(function(){console.log($('#modal').data('group'));})
-    .hide();
+         $(this).find('.save-btn')
+                 .click(function(){
+                          hideError();
 
-  drawModalGroupJobs(group);
-})
+                          if(validateEditor()){
+                             hideSave();
+                            //todo save
+                          }else{
+                            showError('Validation error!');
+                          }
+                 })
+                 .hide();
 
-$('#modal').on('hidden.bs.modal', function (event) {
-  $(this).find('.modal-title').text("");
-  $(this).find('#modal-list').html("");
-  $(this).find('#editor').html("");
- // $(this).removeData();
-})
+         drawModalGroupJobs(group);
+    })
+    .on('hidden.bs.modal', function (event) {
+        $(this).find('.modal-title').text("");
+        $(this).find('#modal-list').html("");
+        $(this).find('#editor').html("");
+        $(this).removeData();
+    });
 
 function drawModalGroupJobs(group){
-     var list = $("<div class='scrollable list-group'/>");
-     list.sortable({
-                  change: function (e, ui) {
-                      console.log('change');
-                  },
-                  stop: function (e, ui) {
-                      console.log('stop');
-                  },
+     var list = $("<div class='scrollable list-group'/>")
+              .sortable({
+                  change: function (e, ui) { console.log('change');},
+                  stop: function (e, ui) {console.log('stop');},
                   cursor: "move"
               });
 
@@ -45,38 +56,38 @@ function drawModalGroupJobs(group){
 
      if(group.jobs) group.jobs.forEach(function(job){
 
-
-        var icon = $("<div class='glyphicon glyphicon-align-justify movable'/>");
         var item = $("<div type='button' class='btn text-nowrap'/>")
             .text(job.name)
             .click(function(){
-                    drawJobForm(job);
+                    if(isSaved()){
+                         drawJobForm(job);
+                    }else{
+                         showDataNotSaved();
+                    }
                 });
 
         var wrap = $("<div class='list-group-item'/>")
-            .append(icon)
+            .append($("<div class='glyphicon glyphicon-align-justify movable'/>"))
             .append(item);
 
         list.append(wrap);
      });
 
-     var addIcon = $('<button type="button" class="list-group-item btn btn-sm btn-block"><span class="glyphicon glyphicon-plus-sign"></span></button>');
-     addIcon.click(drawJobForm);
+     list.append($('<button type="button" class="list-group-item btn btn-sm btn-block"><span class="glyphicon glyphicon-plus-sign"></span></button>'
+                     ).click(drawJobForm));
 
-     list.append(addIcon)
      drawGroupForm();
 }
 
-function drawGroupForm(group){
+function drawGroupForm(){
     var group = $('#modal').data("group");
-    $('#editor').html("");
-
-    var wrapper = $("<div class='container-fluid'/>");
     var form = $('<form class="form-horizontal" />');
-    $('#editor').append(wrapper);
-    wrapper.append(form);
 
-    $('#editor').data('isGroup', true);
+    $('#editor')
+             .html("")
+             .append($("<div class='container-fluid'/>").append(form))
+             .data('isGroup', true)
+             .data('data', group);
 
     form
         .append(editorInput('Group name', group.name, 'name', group))
@@ -85,14 +96,13 @@ function drawGroupForm(group){
 }
 
 function drawJobForm(job){
-
-    var wrapper = $("<div class='container-fluid'/>");
     var form = $('<form class="form-horizontal" />');
 
     $('#editor')
-             .html("")
-             .data('isGroup', false)
-             .append(wrapper.append(form));
+        .html("")
+        .data('isGroup', false)
+        .data('data', job)
+        .append($("<div class='container-fluid'/>").append(form));
     form
         .append(editorInput('Job name', job.name, 'name', job))
         .append(editorTextArea('Description', job.description,'description', job))
@@ -117,7 +127,7 @@ function editorSelect(label, value, id, job){
                         .text(value));
     });
 
-    var v = LogStrategy.values[value] ? value : "select";
+    var v = LogStrategy.values[value] ? value : "select"; //if unknown - change to default
 
     select.val(v.toLowerCase());
 
@@ -184,7 +194,7 @@ function hideSave(){
     $('#modal').find('.save-btn').hide();
 }
 
-function $modalJob (jobName){
+function $modalJob(jobName){
     var result =  $('#modal').data("group").jobs.filter(
      function(job){
         return job.name === jobName;
@@ -195,6 +205,38 @@ function $modalJob (jobName){
 
 function isEditingGroup(){
     return $('#editor').data('isGroup');
+}
+
+function isSaved(){
+    return !$('#modal').find('.save-btn').is(":visible");
+}
+
+function validateEditor(){
+    return true;
+}
+
+function showError(text){
+    $('#modal').find('.modal-header').find('.bg-danger').text(text).show();
+}
+
+function hideError(){
+    $('#modal').find('.modal-header').find('.bg-danger').text("").html("").hide();
+}
+
+function showDataNotSaved(){
+    $('#modal')
+        .find('.modal-header')
+        .find('.bg-danger')
+        .html("")
+        .append("Please save data or <a onclick='resetData()' > reset changes</a>")
+        .show();
+}
+
+function resetData(){
+    var data = $('#editor').data('data');
+    isEditingGroup()? drawGroupForm(data) : drawJobForm(data);
+    hideSave();
+    hideError();
 }
 /*
 

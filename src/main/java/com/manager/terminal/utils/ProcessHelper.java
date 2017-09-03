@@ -2,10 +2,11 @@ package com.manager.terminal.utils;
 
 import com.manager.terminal.entities.Executor;
 import com.manager.terminal.entities.Job;
-import com.sun.istack.internal.Nullable;
 import org.apache.tomcat.util.http.fileupload.util.Streams;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -99,7 +100,7 @@ public class ProcessHelper {
         return Runtime.getRuntime().exec(command);
     }
 
-    public static Process execute(String[] cmdarray, @Nullable String[] envp, File dir) throws IOException {
+    public static Process execute(String[] cmdarray, String[] envp, File dir) throws IOException {
         return Runtime.getRuntime().exec(cmdarray, envp, dir);
     }
 
