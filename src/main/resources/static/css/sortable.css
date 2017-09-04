@@ -90,8 +90,12 @@ box-shadow: none;
   height: 100%;
 }
 
-.list-group-item:hover{
+.movable:hover{
+  filter:brightness(95%);
+}
 
+.inline{
+  display: inline-block;
 }
 
 

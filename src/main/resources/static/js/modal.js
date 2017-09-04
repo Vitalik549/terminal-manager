@@ -12,28 +12,10 @@ $('#modal')
          var group = findGroupByName(groupName).group;
 
          $(this).data('group', group);
-         $(this).find('.modal-title')
-                .text(groupName)
-                .click(function(){
-                         if(isSaved()){
-                              drawGroupForm();
-                         }else{
-                              showDataNotSaved();
-                         }
-                 });
 
-         $(this).find('.save-btn')
-                 .click(function(){
-                          hideError();
+         var icon = $("<span class='glyphicon glyphicon-cog'/>").click(drawGroupForm);
 
-                          if(validateEditor()){
-                             hideSave();
-                            //todo save
-                          }else{
-                            showError('Validation error!');
-                          }
-                 })
-                 .hide();
+         $(this).find('.modal-title').text(groupName).append(icon);
 
          drawModalGroupJobs(group);
     })
@@ -55,28 +37,25 @@ function drawModalGroupJobs(group){
      $('#modal').find('#modal-list').append(list);
 
      if(group.jobs) group.jobs.forEach(function(job){
-
-        var item = $("<div type='button' class='btn text-nowrap'/>")
-            .text(job.name)
-            .click(function(){
-                    if(isSaved()){
-                         drawJobForm(job);
-                    }else{
-                         showDataNotSaved();
-                    }
-                });
-
-        var wrap = $("<div class='list-group-item'/>")
-            .append($("<div class='glyphicon glyphicon-align-justify movable'/>"))
-            .append(item);
-
-        list.append(wrap);
+        drawJobInLeftList(list, job)
      });
 
      list.append($('<button type="button" class="list-group-item btn btn-sm btn-block"><span class="glyphicon glyphicon-plus-sign"></span></button>'
-                     ).click(drawJobForm));
+                     ).click(function(){
+                        var job = new Job();
+                        drawJobInLeftList(list, job)
+                        drawJobForm(job);
+                     }));
 
      drawGroupForm();
+}
+
+function drawJobInLeftList(list, job){
+    $("<div class='movable list-group-item'/>")
+        .appendTo(list)
+        .click(function(){drawJobForm(job);})
+        .append("<div class='inline glyphicon glyphicon-align-justify'/>")
+        .append($("<div  class='inline text-nowrap'/>").text(job.name));
 }
 
 function drawGroupForm(){
@@ -238,27 +217,3 @@ function resetData(){
     hideSave();
     hideError();
 }
-/*
-
-div class="container">
-  <h2>Horizontal form: control states</h2>
-  <form class="form-horizontal">
-
-    <div class="form-group">
-      <label class="col-sm-2 control-label">Focused</label>
-      <div class="col-sm-10">
-        <input class="form-control" id="input-" type="text" >
-      </div>
-    </div>
-
-  </form>
-</div>
-
-  "name": "test job",
-  "description": "starting tests",
-  "command" : "mvn --help",
-  "startingDirectory" : "/Users/admin/work/projects/crud-tests",
-  "baseLogFile" : "/Users/admin/Desktop/ZZZZZ.txt",
-  "logStrategy" : "append"
-
-*/

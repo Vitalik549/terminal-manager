@@ -1,4 +1,4 @@
-var TABLE = "#sortable";
+var TABLE = $("#sortable");
 
 drawTable(readData().groups);
 
@@ -14,7 +14,7 @@ $('#left-panel')
     });
 
 $(function () {
-    $(TABLE).sortable({
+    TABLE.sortable({
         change: function (e, ui) {
             console.log('change');
         },
@@ -27,14 +27,8 @@ $(function () {
         items: "> li"
 
     });
-    $(TABLE).disableSelection();
+    TABLE.disableSelection();
 });
-
-function serializeTable(){
-    return $(TABLE).sortable("serialize", {attribute: "group"});
-
-}
-
 
 function reOrderTableData(){
     var data = readData();
@@ -61,28 +55,28 @@ function drawTable(data) {
 
 function drawGroup(group) {
 
-    var el = $("<li class='ui-state-default group-element'/>")
+    var wrapper = $("<li class='ui-state-default group-element'/>")
              .attr('group', group.name)
              .attr('id', "_" +  group.name);
 
+    var btnWrap = $("<div class='col-xs-2 itm' />")
+             .append("<span data-toggle='modal' data-target='#modal' class='pull-right header-icon glyphicon glyphicon-cog' group='"+group.name+"'/>");
+
     var header = $("<div class='group-header container-fluid itm movable'/>")
              .attr('data-toggle', 'collapse')
-             .attr('data-target', '[group-name="' +group.name+'"]');
+             .attr('data-target', '[group-name="' +group.name+'"]')
+             .append("<div class='col-xs-10 text-nowrap itm' >" + group.name+ "</div>")
+             .append(btnWrap);
 
     var jobContainer = $("<div />")
              .attr('group-name', group.name)
              .addClass('collapse jobs-data-container')
              .data(group);
 
-    var cfg = $("<span data-toggle='modal' data-target='#modal' class='pull-right header-icon glyphicon glyphicon-cog'/>")
-                .attr('group', group.name);
-    var btnWrap = $("<div class='col-xs-2 itm' />")
-                 .append(cfg);
-
-    $(TABLE).append(
-            el.append(
-                header.append("<div class='col-xs-10 text-nowrap itm' >" + group.name+ "</div>", btnWrap),
-                jobContainer));
+    wrapper
+           .append(header)
+           .append(jobContainer)
+           .appendTo(TABLE);
 
     drawJobs(group);
 }
@@ -152,31 +146,3 @@ function startJob(job) {
          console.log('started ' + job)
      });
 }
-
-function submitGroup() {
-
-    var group = getSubmitGroup();
-
-    if (validateGroup(group)) {
-        if (addGroup(group)) {
-            drawGroup(group);
-        }
-    } else {
-        highlightError(group);
-    }
-
-    function getSubmitGroup() {
-        var group = {name: '', description: '', startingDirectory: ''};
-        $('#create-group-form').find('input[type="text"]').each(function () {
-            group[$(this).attr('name')] = $(this).val();
-        });
-        return group;
-    }
-
-    function highlightError(group) {
-        alert("failed to create group" + group);
-    }
-}
-
-
-
