@@ -16,6 +16,11 @@ public class PagesController {
         return "index";
     }
 
+    @RequestMapping("/2")
+    public String index2 () {
+        return "index2";
+    }
+
     @RequestMapping(method= RequestMethod.GET, value="download")
     public void getDownload(HttpServletResponse response) {
         File file = new File("/Users/admin/Desktop/log.txt");
