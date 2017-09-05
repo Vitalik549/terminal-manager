@@ -1,5 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import AppContainer from './containers/AppContainer';
+import { createStore } from 'redux';
+import terminalManagerApp from './reducers';
+import { Provider } from 'react-redux';
 
-ReactDOM.render(<App />, document.getElementById('container'));
+let store = createStore(terminalManagerApp);
+
+ReactDOM.render(
+    <Provider store={store}>
+        <AppContainer />
+    </Provider>, document.getElementById('container'));
