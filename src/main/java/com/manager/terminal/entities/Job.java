@@ -9,7 +9,7 @@ import java.util.Objects;
 
 public class Job {
 
-    private Integer id;
+    private Long id;
     private String name;
     private String description;
     private String command;
@@ -26,11 +26,11 @@ public class Job {
     public Job() {
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -151,12 +151,4 @@ public class Job {
         if (!dir.exists()) throw new RuntimeException("Parent dir doesn't exist: " + dir.getAbsolutePath());
         this.baseLogFile = file;
     }
-
-
-    public Job initializeAdditionalFields() {
-
-        return this;
-    }
-
-
 }

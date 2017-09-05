@@ -15,7 +15,7 @@ public class ExecutorController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/start/job")
     public void startJob(@RequestBody Job job){
-        executorService.startJob(job.initializeAdditionalFields());
+        executorService.startJob(job);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/stop/job")
