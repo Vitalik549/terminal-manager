@@ -1,5 +1,7 @@
 package com.manager.terminal.entities;
 
+import com.manager.terminal.entities.validators.ValidDirectory;
+import com.manager.terminal.entities.validators.ValidJob;
 import com.manager.terminal.utils.LogStrategy;
 
 import java.io.File;
@@ -7,79 +9,111 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@ValidJob
 public class Job {
 
     private Long id;
     private String name;
     private String description;
     private String command;
-    private int position;
-    private Integer groupId;
+    private Long groupId;
+    @ValidDirectory(message = "Starting directory")
     private File startingDirectory;
     transient private Process process;
     private File baseLogFile;
-
     private LogStrategy logStrategy;
-
     private List<Integer> processTree = new ArrayList<>();
 
-    public Job() {
-    }
+    public Job() {}
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public Job setId(Long id) {
         this.id = id;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public Job setName(String name) {
         this.name = name;
+        return this;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    public Job setDescription(String description) {
         this.description = description;
+        return this;
     }
 
     public String getCommand() {
         return command;
     }
 
-    public void setCommand(String command) {
+    public Job setCommand(String command) {
         this.command = command;
+        return this;
     }
 
-    public Process getProcess() {
-        return process;
+    public Long getGroupId() {
+        return groupId;
     }
 
-    public void setProcess(Process process) {
-        this.process = process;
+    public Job setGroupId(Long groupId) {
+        this.groupId = groupId;
+        return this;
     }
 
     public File getStartingDirectory() {
         return startingDirectory;
     }
 
-    public void setStartingDirectory(File startingDirectory) {
+    public Job setStartingDirectory(File startingDirectory) {
         this.startingDirectory = startingDirectory;
+        return this;
+    }
+
+    public Process getProcess() {
+        return process;
+    }
+
+    public Job setProcess(Process process) {
+        this.process = process;
+        return this;
+    }
+
+    public File getBaseLogFile() {
+        return baseLogFile;
+    }
+
+    public Job setBaseLogFile(File baseLogFile) {
+        this.baseLogFile = baseLogFile;
+        return this;
+    }
+
+    public LogStrategy getLogStrategy() {
+        return logStrategy;
+    }
+
+    public Job setLogStrategy(LogStrategy logStrategy) {
+        this.logStrategy = logStrategy;
+        return this;
     }
 
     public List<Integer> getProcessTree() {
         return processTree;
     }
 
-    public void setProcessTree(List<Integer> processTree) {
+    public Job setProcessTree(List<Integer> processTree) {
         this.processTree = processTree;
+        return this;
     }
 
     @Override
@@ -112,43 +146,5 @@ public class Job {
                 ", startingDirectory='" + startingDirectory + '\'' +
                 ", processTree=" + processTree +
                 '}';
-    }
-
-    public Integer getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(Integer groupId) {
-        this.groupId = groupId;
-    }
-
-    public int getPosition() {
-        return position;
-    }
-
-    public void setPosition(int position) {
-        this.position = position;
-    }
-
-    public File getBaseLogFile() {
-        return baseLogFile;
-    }
-
-
-    public LogStrategy getLogStrategy() {
-        return logStrategy;
-    }
-
-    public void setLogStrategy(String logStrategy) {
-        this.logStrategy = LogStrategy.get(logStrategy);
-    }
-
-
-    public void setBaseLogFile(String baseLogFile) {
-        File file = new File(baseLogFile);
-        File dir = file.getParentFile();
-        if (!dir.isDirectory()) throw new RuntimeException("There's no directory: " + dir.getAbsolutePath());
-        if (!dir.exists()) throw new RuntimeException("Parent dir doesn't exist: " + dir.getAbsolutePath());
-        this.baseLogFile = file;
     }
 }

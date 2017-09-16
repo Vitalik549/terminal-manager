@@ -134,15 +134,20 @@ function drawJobButton(parent, name, glyphicon, func){
     btn.click(func);
 }
 
+var response;
+
 function startJob(job) {
-        console.log("starting " + job.name); //todo remove
+        console.log("starting " + job.name + job); //todo remove
      $.ajax({
          type: "POST",
          url: "/start/job",
          data: JSON.stringify(job),
          dataType: "json",
          contentType : "application/json"
-     }).done(function() {
-         console.log('started ' + job)
+     }).always(function(data) {
+         response = data;
+         //todo: printing errors, remove when tested
+         var rj = response.responseJSON;
+         if(rj && rj.errors) rj.errors.forEach(function(a){console.log(a.defaultMessage)})
      });
 }

@@ -1,11 +1,9 @@
 package com.manager.terminal.utils;
 
 public enum LogStrategy {
-    APPEND("append", "Appending logs to existing file."),
-    OVERRIDE("override", "Override existing log file with new data."),
-    ITERATE("iterate", "If log file with such name exists - creates new file with name '%oldFileName% (+1)'");
-
-    private String name;
+    APPEND("Appending logs to existing file."),
+    OVERRIDE("Override existing log file with new data."),
+    ITERATE("If log file with such name exists - creates new file with name '%oldFileName% (+1)'");
 
     public String getDescription() {
         return description;
@@ -13,18 +11,11 @@ public enum LogStrategy {
 
     private String description;
 
-    LogStrategy(String name, String description) {
-        this.name = name;
+    LogStrategy(String description) {
         this.description = description;
     }
 
     public static LogStrategy get(String name) {
         return LogStrategy.valueOf(name.toUpperCase());
     }
-
-    public static void main(String[] args) {
-        LogStrategy l = LogStrategy.get("append");
-        System.out.println(l.name);
-    }
-
 }

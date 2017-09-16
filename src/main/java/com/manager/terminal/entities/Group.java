@@ -1,5 +1,6 @@
 package com.manager.terminal.entities;
 
+import java.io.File;
 import java.util.List;
 import java.util.Objects;
 
@@ -8,7 +9,7 @@ public class Group {
     private Long id;
     private String name;
     private String description;
-    private String startingDirectory;
+    private File startingDirectory;
     private List<Job> jobs;
 
     public Group() {}
@@ -17,69 +18,46 @@ public class Group {
         return id;
     }
 
-    public void setId(Long id) {
+    public Group setId(Long id) {
         this.id = id;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public Group setName(String name) {
         this.name = name;
+        return this;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    public Group setDescription(String description) {
         this.description = description;
+        return this;
     }
 
-    public String getStartingDirectory() {
-        if (startingDirectory == null) {
-            return ".";
-        }
+    public File getStartingDirectory() {
         return startingDirectory;
     }
 
-    public void setStartingDirectory(String startingDirectory) {
+    public Group setStartingDirectory(File startingDirectory) {
         this.startingDirectory = startingDirectory;
+        return this;
     }
 
     public List<Job> getJobs() {
         return jobs;
     }
 
-    public void setJobs(List<Job> jobs) {
+    public Group setJobs(List<Job> jobs) {
         this.jobs = jobs;
+        return this;
     }
-
-    public void addJob(Job job) {
-        this.jobs.add(job);
-    }
-
-    public void removeJob(Job job){
-        this.jobs.remove(job);
-    }
-
-    public void removeJob(int jobId){
-        this.jobs.removeIf(job -> job.getId().equals(jobId));
-    }
-
-  //  public void setJobs(int[] jobs) {
-  //      this.jobs = new ArrayList<>();
-  //      addJobs(jobs);
-  //  }
-//
-  //  public void addJobs(int[] jobs) {
-  //      Arrays.stream(jobs).forEach(this::addJob);
-  //  }
-//
-  //  public void addJob(int jobId) {
-  //      this.jobs.add(jobService.getJob(jobId));
-  //  }
 
     @Override
     public int hashCode() {

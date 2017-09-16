@@ -1,9 +1,9 @@
 var LogStrategy = {
     "values" : {
-            "select" : "Select log strategy..." ,
-            "override" : "Override",
-            "append" : "Append",
-            "iterate" : "Iterate" }
+            "SELECT" : "Select log strategy..." ,
+            "OVERRIDE" : "Override",
+            "APPEND" : "Append",
+            "ITERATE" : "Iterate" }
 }
 
 $('#modal')

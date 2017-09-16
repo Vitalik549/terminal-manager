@@ -1,8 +1,10 @@
 package com.manager.terminal.utils;
 
-import com.manager.terminal.entities.Executor;
 import com.manager.terminal.entities.Job;
 import org.apache.tomcat.util.http.fileupload.util.Streams;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.thymeleaf.util.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,23 +16,10 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ProcessHelper {
 
-    public static void getPidDescr(int... pids) {
-        StringBuilder builder = new StringBuilder("ps u -p");
-        Arrays.stream(pids).forEach(pid-> builder.append(" ").append(String.valueOf(pid)));
-        try {
-            logProcess(execute(builder.toString()), Executor.file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        List<String> list = Arrays.stream(pids).mapToObj(String::valueOf).collect(Collectors.toList());
-        System.out.println("-p " + String.join(" ", list));
-    }
-
+    private static final Logger log = LoggerFactory.getLogger(ProcessHelper.class);
 
     public static synchronized int getPidOfProcess(Process p) {
         int pid = -1;
@@ -48,21 +37,8 @@ public class ProcessHelper {
         return pid;
     }
 
-    //  try {
-    //     System.out.println("GOING TO KILL TREE");
-    //     System.out.println(Streams.asString(Runtime.getRuntime().exec("pstree " + pid).getInputStream()));
-    // } catch (IOException e) {
-    //     e.printStackTrace();
-    // }
-
     public static List<Integer> getPidDescendantTree(int pid) {
-        List<Integer> processes = new ArrayList<>();
-        getProcessSiblings(processes, pid);
-        return processes;
-    }
-
-    private static void getProcessSiblings(List<Integer> listToCollect, Integer pid) {
-        listToCollect.add(pid);
+        List<Integer> listToCollect = new ArrayList<>();
         String result = null;
 
         try {
@@ -72,19 +48,15 @@ public class ProcessHelper {
             e.printStackTrace();
         }
 
-        if (result == null || result.equals("")) return;
+        if (StringUtils.isEmptyOrWhitespace(result)) return listToCollect;
 
         for (String p : Arrays.asList(result.split("\n"))) {
             if (p.length() > 5 || p.equals("00001") || p.equals("1"))
                 throw new RuntimeException("Process id is " + p + " , not going to kill! ");
 
             listToCollect.add(Integer.valueOf(p));
-
         }
-    }
-
-    public static long getThreadId() {
-        return Thread.currentThread().getId();
+        return listToCollect;
     }
 
     public static void killProcessById(Integer pid) {
@@ -92,7 +64,7 @@ public class ProcessHelper {
             execute("kill -9 " + pid);
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("CANT KILL PROCESS WITH ID " + pid);
+            log.info("CANT KILL PROCESS WITH ID " + pid);
         }
     }
 
@@ -108,16 +80,19 @@ public class ProcessHelper {
 
         Files.copy(process.getInputStream(), Paths.get(file.toURI()), StandardCopyOption.REPLACE_EXISTING);
 
-        Files.lines(file.toPath()).forEach(System.out::println); //todo remove
+        Files.lines(file.toPath()).forEach(log::info); //todo remove
     }
 
     public static List<Integer> getPIDsOfAllJobProcesses(Job job) {
         int mainProcessPid = ProcessHelper.getPidOfProcess(job.getProcess());
 
         List<Integer> PIDs = ProcessHelper.getPidDescendantTree(mainProcessPid);
+
+        PIDs.add(mainProcessPid);
         job.setProcessTree(PIDs);
 
-        if (PIDs.size() > 7) throw new RuntimeException("Tree is too big");
+        //Todo remove
+        if (PIDs.size() > 7) throw new RuntimeException("Tree is too big for testing mode =)");
         return PIDs;
     }
 }

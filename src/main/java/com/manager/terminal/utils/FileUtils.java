@@ -36,7 +36,6 @@ public class FileUtils {
         return logStrategy.equals(LogStrategy.APPEND)
                 ? Redirect.appendTo(logFile)
                 : Redirect.to(logFile);
-
     }
 
     public static File createLogFile(Job job) {
@@ -58,7 +57,7 @@ public class FileUtils {
         return file;
     }
 
-    public static File iterate(File file) {
+    private static File iterate(File file) {
         boolean exists = file.exists();
         if (!exists) return file;
 
